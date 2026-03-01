@@ -1,0 +1,33 @@
+name: Terrafrom destroy
+
+on:
+    workflow_dispatch:
+
+jobs:
+  Terraform-destroy:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      -  name: Checkout code
+         uses: actions/checkout@v4
+
+      -  name: setup terraform 
+         uses: hashicorp/setup-terraform@v3
+
+      -  name: configure aws credentials
+         uses: aws-actions/configure-aws-credentials@v4
+         with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: us-east-2
+          role-session-name: github-actions
+      -  name: terraform init
+         run: terraform init
+         working-directory: asg-django-app
+      -  name: terraform destroy
+         run: terraform destroy --auto-approve
+         working-directory: asg-django-app
+
+
+
