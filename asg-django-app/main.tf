@@ -39,7 +39,7 @@ module "asg" {
   source = "./modules/asg"
   instance_type = var.instance_type
   target_arn = module.alb.target_group_arn
-  ami_id = data.aws_ami.amazon_linux.id
+  ami_id = data.aws_ami.amazon_linux.id # ami id of the linux instance
   asg_sg_id = module.sg.asg_ids
   private_subnet_ids = module.vpc.private_subnet_ids
 }
